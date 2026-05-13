@@ -705,13 +705,13 @@ function InfoPopover({content,onClose}){
 
 function PageHeader({title,count,subtitle,actions}){
   return (
-    <div style={{padding:"18px 24px 0",display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:16}}>
+    <div style={{padding:"14px 24px 0",display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:16}}>
       <div>
-        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:4}}>
-          <h1 style={{fontSize:20,fontWeight:600,color:C.g900,letterSpacing:"-0.01em"}}>{title}</h1>
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:2}}>
+          <h1 style={{fontSize:18,fontWeight:600,color:C.g900,letterSpacing:"-0.01em"}}>{title}</h1>
           {count!=null&&<span style={{fontSize:11,padding:"2px 8px",borderRadius:10,background:C.peach,color:C.peachT,fontWeight:600}}>{count} open</span>}
         </div>
-        {subtitle&&<p style={{fontSize:12,color:C.g500}}>{subtitle}</p>}
+        {subtitle&&<p style={{fontSize:11,color:C.g500}}>{subtitle}</p>}
       </div>
       {actions&&<div style={{display:"flex",gap:6}}>{actions}</div>}
     </div>
@@ -840,10 +840,10 @@ function WorkflowCard({type,status="completed",vatRisk,vatRiskDelta,vatRiskNote,
     <div style={{background:C.white,borderRadius:12,border:`1px solid ${C.g200}`,overflow:"hidden",display:"flex",flexDirection:"column",position:"relative"}}>
       <div style={{height:3,background:`linear-gradient(90deg,${accent.bar},${notStarted?accent.bar+"44":accent.bar+"88"})`}}/>
 
-      <div style={{padding:"12px 18px",borderBottom:`1px solid ${C.g100}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+      <div style={{padding:"10px 16px",borderBottom:`1px solid ${C.g100}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:30,height:30,borderRadius:8,background:accent.bg,display:"flex",alignItems:"center",justifyContent:"center"}}>
-            {isPurchase?<Ic.ArrowD s={14} c={accent.t}/>:<Ic.ArrowU s={14} c={accent.t}/>}
+          <div style={{width:26,height:26,borderRadius:7,background:accent.bg,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            {isPurchase?<Ic.ArrowD s={12} c={accent.t}/>:<Ic.ArrowU s={12} c={accent.t}/>}
           </div>
           <div>
             <div style={{fontSize:13,fontWeight:600,color:C.g900,letterSpacing:"-0.005em"}}>{type} E-Invoice Recon</div>
@@ -858,7 +858,7 @@ function WorkflowCard({type,status="completed",vatRisk,vatRiskDelta,vatRiskNote,
             </div>
           </div>
         </div>
-        <button style={{padding:5,borderRadius:5}}><Ic.More/></button>
+        <button style={{padding:4,borderRadius:5}}><Ic.More/></button>
       </div>
 
       {notStarted?(
@@ -878,29 +878,29 @@ function WorkflowCard({type,status="completed",vatRisk,vatRiskDelta,vatRiskNote,
       </>
       ):(
       <>
-        <div style={{padding:"16px 18px",borderBottom:`1px solid ${C.g100}`,background:`linear-gradient(180deg,${C.g50}00,${C.g50})`}}>
+        <div style={{padding:"12px 16px",borderBottom:`1px solid ${C.g100}`,background:`linear-gradient(180deg,${C.g50}00,${C.g50})`}}>
           <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",gap:12}}>
             <div>
-              <div style={{fontSize:10,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>{isPurchase?"Input VAT at risk · ITC exposure":"Total taxable value reconciled"}</div>
-              <div style={{fontSize:32,fontWeight:700,color:C.g900,lineHeight:1,letterSpacing:"-0.02em"}}>{vatRisk}</div>
-              {vatRiskDelta&&<div style={{fontSize:11,fontWeight:600,color:C.red,display:"flex",alignItems:"center",gap:3,marginTop:6}}>
-                <Ic.ArrowU s={10}/>{vatRiskDelta}
+              <div style={{fontSize:10,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4}}>{isPurchase?"Input VAT at risk · ITC exposure":"Total taxable value reconciled"}</div>
+              <div style={{fontSize:24,fontWeight:700,color:C.g900,lineHeight:1,letterSpacing:"-0.02em"}}>{vatRisk}</div>
+              {vatRiskDelta&&<div style={{fontSize:10,fontWeight:600,color:C.red,display:"flex",alignItems:"center",gap:3,marginTop:4}}>
+                <Ic.ArrowU s={9}/>{vatRiskDelta}
               </div>}
-              {vatRiskNote&&<div style={{fontSize:10,fontWeight:600,color:C.lilacT,marginTop:6,padding:"2px 7px",background:C.lilac,borderRadius:5,display:"inline-block"}}>{vatRiskNote}</div>}
+              {vatRiskNote&&<div style={{fontSize:10,fontWeight:600,color:C.lilacT,marginTop:4,padding:"2px 6px",background:C.lilac,borderRadius:5,display:"inline-block"}}>{vatRiskNote}</div>}
             </div>
             <div style={{textAlign:"right"}}>
-              <div style={{fontSize:24,fontWeight:700,color:C.g700,lineHeight:1}}>{exceptionCount}</div>
-              <div style={{fontSize:10,color:C.g500,marginTop:3}}>exceptions found</div>
+              <div style={{fontSize:20,fontWeight:700,color:C.g700,lineHeight:1}}>{exceptionCount}</div>
+              <div style={{fontSize:10,color:C.g500,marginTop:2}}>exceptions</div>
             </div>
           </div>
         </div>
 
-        <div style={{padding:"12px 18px",borderBottom:`1px solid ${C.g100}`}}>
-          <div style={{fontSize:9,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:7}}>Exception breakdown</div>
-          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+        <div style={{padding:"10px 16px",borderBottom:`1px solid ${C.g100}`}}>
+          <div style={{fontSize:9,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>Exception breakdown</div>
+          <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
             {exceptions.map((e,i)=>(
-              <div key={i} style={{padding:"5px 10px",background:e.bg,borderRadius:6,display:"flex",alignItems:"center",gap:6}}>
-                <span style={{fontSize:13,fontWeight:700,color:e.t,lineHeight:1}}>{e.count}</span>
+              <div key={i} style={{padding:"4px 8px",background:e.bg,borderRadius:5,display:"flex",alignItems:"center",gap:5}}>
+                <span style={{fontSize:12,fontWeight:700,color:e.t,lineHeight:1}}>{e.count}</span>
                 <span style={{fontSize:10,color:e.t,fontWeight:500}}>{e.label}</span>
               </div>
             ))}
@@ -910,19 +910,19 @@ function WorkflowCard({type,status="completed",vatRisk,vatRiskDelta,vatRiskNote,
         {/* "What I did" — short narrative aside from the agent. Builds trust by
             spelling out what was actually done, in plain language. */}
         {whatIDid&&(
-          <div style={{padding:"14px 18px",borderBottom:`1px solid ${C.g100}`}}>
-            <div style={{background:C.g50,borderRadius:8,borderLeft:`2px solid ${C.blueXL}`,padding:"10px 12px"}}>
-              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
-                <Ic.Sparkle s={12} c={C.aiSpark}/>
-                <span style={{fontSize:10,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.06em"}}>What I did</span>
+          <div style={{padding:"10px 16px",borderBottom:`1px solid ${C.g100}`}}>
+            <div style={{background:C.g50,borderRadius:7,borderLeft:`2px solid ${C.blueXL}`,padding:"8px 10px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
+                <Ic.Sparkle s={11} c={C.aiSpark}/>
+                <span style={{fontSize:9,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.06em"}}>What I did</span>
               </div>
-              <div style={{fontSize:12,lineHeight:1.6,color:C.g600,fontStyle:"italic"}}>{whatIDid}</div>
+              <div style={{fontSize:11,lineHeight:1.55,color:C.g600,fontStyle:"italic"}}>{whatIDid}</div>
             </div>
           </div>
         )}
 
-        <div style={{marginTop:"auto",padding:"12px 18px",borderTop:`1px solid ${C.g100}`,background:C.g50}}>
-          <button onClick={onOpenRecon} style={{width:"100%",padding:"9px 14px",borderRadius:8,background:`linear-gradient(135deg,${C.blueB},${C.navy})`,color:C.white,fontSize:12,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+        <div style={{marginTop:"auto",padding:"10px 16px",borderTop:`1px solid ${C.g100}`,background:C.g50}}>
+          <button onClick={onOpenRecon} style={{width:"100%",padding:"8px 12px",borderRadius:7,background:`linear-gradient(135deg,${C.blueB},${C.navy})`,color:C.white,fontSize:12,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
             <Ic.Sparkle s={11}/>Open recon report
           </button>
         </div>
@@ -2888,7 +2888,7 @@ function MitigatePage({setPage,setChatPrompt,setReconView}){
 
       {/* SECTION 1: HERO - Reconciliation tab group (no orientation strip above —
           the AI Briefing panel below carries the orientation numbers in prose) */}
-      <div style={{padding:"24px 24px 0"}}>
+      <div style={{padding:"16px 24px 0"}}>
         <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:12,borderBottom:`1px solid ${C.g200}`,paddingBottom:0}}>
           <div style={{display:"flex",gap:2}}>
             <button style={{padding:"10px 16px",fontSize:13,fontWeight:600,color:C.blueM,background:"transparent",borderBottom:`2px solid ${C.blueB}`,marginBottom:-1}}>
@@ -2905,85 +2905,90 @@ function MitigatePage({setPage,setChatPrompt,setReconView}){
         </div>
       </div>
 
-      {/* SECTION 2: AI Briefing — replaces the previous trend chart + suppliers grid.
-          Calm narrative surface; orientation numbers are woven into the prose. */}
-      <div style={{padding:"24px 24px 0"}}>
-        <div style={{background:C.blueBg,border:`1px solid ${C.blueXL}`,borderRadius:12,padding:24}}>
-          {/* Header */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:18,paddingBottom:14,borderBottom:`1px solid ${C.blueXL}`}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(135deg,${C.aiD},${C.aiM})`,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <Ic.Sparkle s={14}/>
+      {/* SECTION 2: AI Briefing — three compact finding cards stacked horizontally.
+          Each card carries one observation with its own accent color and a single
+          primary action. Tighter than the prose version and easier to scan. */}
+      <div style={{padding:"16px 24px 0"}}>
+        <div style={{background:C.white,border:`1px solid ${C.g200}`,borderRadius:12,overflow:"hidden",boxShadow:"0 1px 3px rgba(0,0,0,0.02)"}}>
+          {/* Header bar */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 18px",background:`linear-gradient(135deg,${C.aiD},${C.aiM})`,color:C.white}}>
+            <div style={{display:"flex",alignItems:"center",gap:9}}>
+              <Ic.Sparkle s={14} c={C.aiSpark}/>
+              <span style={{fontSize:13,fontWeight:600,letterSpacing:"-0.005em"}}>Today's briefing</span>
+              <span style={{fontSize:10,color:C.blueL,opacity:0.85,marginLeft:4}}>· 3 things worth your attention</span>
+            </div>
+            <div style={{fontSize:10,color:C.blueL,display:"flex",alignItems:"center",gap:5,opacity:0.85}}>
+              <Ic.Clock s={10} c={C.blueL}/><span>Generated by VAT Recon Agent · 08:45 AM</span>
+            </div>
+          </div>
+
+          {/* 3-column finding cards */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:0}}>
+            {[
+              {
+                kind:"Top issue",
+                accent:C.red,
+                accentBg:C.redL,
+                icon:(<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke={C.red} strokeWidth="1.7"/><circle cx="12" cy="12" r="5" stroke={C.red} strokeWidth="1.7"/><circle cx="12" cy="12" r="1.4" fill={C.red}/></svg>),
+                metric:"AED 22K",
+                metricSub:"5 invoices · Emirates Suppliers",
+                body:"VAT rounding errors at 4.76% instead of 5% — same pattern as the last two months. Correction draft is ready.",
+                primary:{label:"Review correction",icon:<Ic.Mail s={11} c={C.white}/>,onClick:()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Show me the Emirates Suppliers correction draft");}},
+                secondary:{label:"Open Sales Recon",onClick:()=>setReconView({type:"Sales",state:"populated"})}
+              },
+              {
+                kind:"Escalate",
+                accent:C.amber,
+                accentBg:C.amberL,
+                icon:<Ic.Flag s={14} c={C.amber}/>,
+                metric:"3 months",
+                metricSub:"Dubai Imports LLC · recurring",
+                body:"Missing e-invoices flagged for the third consecutive month. Looks systemic — worth raising with your tax manager.",
+                primary:{label:"Escalate now",icon:<Ic.Flag s={11} c={C.white}/>,onClick:()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Escalate Dubai Imports LLC to the tax manager — 3 months of missing e-invoices");}},
+                secondary:{label:"Show pattern across periods",onClick:()=>setPage("artifacts")}
+              },
+              {
+                kind:"Trend",
+                accent:C.blueM,
+                accentBg:C.blueXXL,
+                icon:(<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 17l6-6 4 4 8-8M21 7v6h-6" stroke={C.blueM} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+                metric:"+32%",
+                metricSub:"exception volume vs Dec",
+                body:"Two suppliers — Emirates and Dubai Imports — drive ~60% of this period's risk. Resolving them clears the bulk.",
+                primary:{label:"Show me how",icon:<Ic.Sparkle s={11} c={C.white}/>,onClick:()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Walk me through resolving Emirates Suppliers and Dubai Imports in priority order");}},
+                secondary:null
+              }
+            ].map((f,i)=>(
+              <div key={i} style={{padding:"16px 18px",borderRight:i<2?`1px solid ${C.g200}`:"none",display:"flex",flexDirection:"column",gap:10}}>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <div style={{width:24,height:24,borderRadius:6,background:f.accentBg,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{f.icon}</div>
+                  <span style={{fontSize:10,fontWeight:700,color:f.accent,textTransform:"uppercase",letterSpacing:"0.08em"}}>{f.kind}</span>
+                </div>
+                <div>
+                  <div style={{fontSize:22,fontWeight:700,color:C.g900,lineHeight:1,letterSpacing:"-0.015em",marginBottom:4}}>{f.metric}</div>
+                  <div style={{fontSize:10,color:C.g500,fontWeight:500}}>{f.metricSub}</div>
+                </div>
+                <div style={{fontSize:12,lineHeight:1.55,color:C.g700,flex:1}}>{f.body}</div>
+                <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center"}}>
+                  <button onClick={f.primary.onClick}
+                    style={{padding:"6px 11px",height:30,borderRadius:6,background:`linear-gradient(135deg,${C.blueB},${C.navy})`,color:C.white,fontSize:11,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}>
+                    {f.primary.icon}{f.primary.label}
+                  </button>
+                  {f.secondary&&(
+                    <button onClick={f.secondary.onClick}
+                      style={{padding:"6px 8px",height:30,borderRadius:6,background:"transparent",color:C.g600,fontSize:11,fontWeight:500,display:"inline-flex",alignItems:"center",gap:4}}
+                      onMouseEnter={e=>{e.currentTarget.style.color=C.blueM;}}
+                      onMouseLeave={e=>{e.currentTarget.style.color=C.g600;}}>
+                      {f.secondary.label}<Ic.ChevR s={10}/>
+                    </button>
+                  )}
+                </div>
               </div>
-              <div>
-                <div style={{fontSize:14,fontWeight:600,color:C.g900,letterSpacing:"-0.005em"}}>Today's briefing</div>
-                <div style={{fontSize:10,color:C.g500,marginTop:1}}>From the VAT Recon Agent · for Tech Corp UAE Holdings</div>
-              </div>
-            </div>
-            <div style={{fontSize:10,color:C.g500,display:"flex",alignItems:"center",gap:5}}>
-              <Ic.Clock s={10} c={C.g500}/><span>Generated by VAT Recon Agent at 08:45 AM</span>
-            </div>
-          </div>
-
-          {/* Paragraph 1 — Headline finding */}
-          <div style={{marginBottom:18}}>
-            <p style={{fontSize:14,lineHeight:1.7,color:C.g800,margin:0,marginBottom:10}}>
-              Your compliance score is <strong style={{color:C.g900,fontWeight:600}}>63%</strong> and <strong style={{color:C.g900,fontWeight:600}}>AED 130K</strong> is at risk across <strong style={{color:C.g900,fontWeight:600}}>63 open exceptions</strong>. Most of that exposure comes from a single supplier: <strong style={{color:C.g900,fontWeight:600}}>Emirates Suppliers</strong>, with AED 22K in VAT rounding errors across 5 invoices. The pattern matches the past two months — they keep declaring VAT at 4.76% instead of 5%. I've drafted a correction request waiting for your approval.
-            </p>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-              <button onClick={()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Show me the Emirates Suppliers correction draft");}}
-                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
-                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
-                <Ic.Mail s={11} c={C.blueM}/>Review correction draft
-              </button>
-              <button onClick={()=>setReconView({type:"Sales",state:"populated"})}
-                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
-                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
-                <Ic.ArrowF s={11} c={C.blueM}/>Open Sales Recon
-              </button>
-            </div>
-          </div>
-
-          {/* Paragraph 2 — Escalation flag */}
-          <div style={{marginBottom:18}}>
-            <p style={{fontSize:14,lineHeight:1.7,color:C.g800,margin:0,marginBottom:10}}>
-              <strong style={{color:C.g900,fontWeight:600}}>Dubai Imports LLC</strong> has been flagged for the third consecutive month with missing e-invoices. This is starting to look systemic — worth escalating to your tax manager.
-            </p>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-              <button onClick={()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Escalate Dubai Imports LLC to the tax manager — 3 months of missing e-invoices");}}
-                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
-                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
-                <Ic.Flag s={11} c={C.blueM}/>Escalate to tax manager
-              </button>
-              <button onClick={()=>setPage("artifacts")}
-                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
-                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
-                <Ic.Folder s={11} c={C.blueM}/>Show pattern across periods
-              </button>
-            </div>
-          </div>
-
-          {/* Paragraph 3 — Trend context */}
-          <div>
-            <p style={{fontSize:14,lineHeight:1.7,color:C.g800,margin:0,marginBottom:10}}>
-              Compared to December, exception volume is up <strong style={{color:C.g900,fontWeight:600}}>32%</strong>, mostly driven by Emirates Suppliers and Dubai Imports. Resolving these two would cut about <strong style={{color:C.g900,fontWeight:600}}>60%</strong> of this period's risk.
-            </p>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-              <button onClick={()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Walk me through resolving Emirates Suppliers and Dubai Imports in priority order");}}
-                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
-                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
-                <Ic.Sparkle s={11} c={C.blueM}/>Show me how
-              </button>
-            </div>
+            ))}
           </div>
         </div>
       </div>
-      <div style={{padding:24}}/>
+      <div style={{padding:12}}/>
     </div>
   );
 }
