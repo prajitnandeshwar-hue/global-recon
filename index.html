@@ -229,7 +229,7 @@ const RECON_LINE_DATA=[{"dn":"INV-2026-0421","ms":"Mismatch","sev":"High","actio
 // ============ SHARED COMPONENTS ============
 
 function TopNav({page,setPage,isFirstRun,onShowOnboarding,businessId,setBusinessId,period,setPeriod,onOpenPeriodModal}){
-  const titles={mitigate:"Mitigate Risks", report:"Report Taxes", govern:"Govern Taxes", artifacts:"Records", vault:"Vault", agents:"Agents", exceptions:"Exceptions"};
+  const titles={mitigate:"Mitigate Risks", report:"Report Taxes", govern:"Govern Taxes", artifacts:"Records", agents:"Agents", exceptions:"Exceptions"};
   const [hintVisible,setHintVisible]=useState(isFirstRun);
   const [bizOpen,setBizOpen]=useState(false);
   const [bizQuery,setBizQuery]=useState("");
@@ -547,7 +547,6 @@ function SideNav({page,setPage,onResetOnboarding}){
     {id:"report", l:"Report Taxes", I:Ic.Chart, group:"work"},
     {id:"govern", l:"Govern Taxes", I:Ic.Globe, group:"work"},
     {id:"artifacts", l:"Records", I:Ic.Folder, group:"record"},
-    {id:"vault", l:"Vault", I:Ic.Box, group:"record"},
     {id:"agents", l:"Agents", I:Ic.Bot, badge:"7", group:"system"}
   ];
   const groups={work:"Workflow", record:"Record", system:"System"};
@@ -596,7 +595,6 @@ function AIWorkspaceBar({page,onExpand,businessId,period}){
     report:"Ask the AI to generate a report, run a recon, or summarize findings...",
     govern:"Ask about filing readiness, deadlines, or compliance gaps...",
     artifacts:"Search records or ask the AI to retrieve a past conversation or report...",
-    vault:"Ask about your data sources or transaction records...",
     agents:"Ask about agent runs, schedules, or pending approvals..."
   };
   const biz=BUSINESSES.find(b=>b.id===businessId)||BUSINESSES[0];
@@ -606,7 +604,6 @@ function AIWorkspaceBar({page,onExpand,businessId,period}){
     report:`Report Taxes · ${period||"Q1 2026"}`,
     govern:`Govern Taxes · ${biz.jur}`,
     artifacts:"Records · All periods",
-    vault:"Vault · Live data",
     agents:"Agents · 5 active"
   };
   const items=[
@@ -3661,65 +3658,6 @@ function ArtifactsPage({businessId,period,runs,archivedConversations,highlightCo
   );
 }
 
-// ============ VAULT PAGE ============
-
-function VaultPage(){
-  return (
-    <div style={{flex:1,overflow:"auto"}}>
-      <PageHeader title="Vault" subtitle="Live data sources · ERP, e-invoice portals, supplier registries"/>
-
-      <div style={{padding:"18px 24px 0"}}>
-        <div style={{fontSize:11,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:10}}>Connected sources</div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12}}>
-          {[
-            {n:"SAP S/4HANA",t:"ERP · GL Stream",status:"Live",c:"#00CCFF",records:"1,412 invoices today"},
-            {n:"FTA Portal (UAE)",t:"E-invoice authority",status:"Live",c:"#10B981",records:"08:45 AM sync · 1,371 records"},
-            {n:"Oracle Fusion",t:"ERP · Purchase ledger",status:"Live",c:"#F80000",records:"892 PO records today"},
-            {n:"FTA E-Invoice (UAE)",t:"E-invoice authority",status:"Pending",c:"#0066CC",records:"Awaiting connection"},
-            {n:"Supplier Master",t:"Internal registry",status:"Live",c:C.g700,records:"248 suppliers · 12 unverified"},
-            {n:"Bank API",t:"Payment reconciliation",status:"Live",c:"#1E40AF",records:"AED 4.2M transactions"}
-          ].map((s,i)=>(
-            <div key={i} style={{background:C.white,borderRadius:10,padding:14,border:`1px solid ${C.g200}`}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
-                <div style={{width:32,height:32,borderRadius:8,background:s.c,display:"flex",alignItems:"center",justifyContent:"center",color:C.white,fontSize:13,fontWeight:700}}>{s.n[0]}</div>
-                <span style={{fontSize:10,padding:"2px 7px",borderRadius:8,background:s.status==="Live"?C.greenL:C.amberL,color:s.status==="Live"?C.green:C.amber,fontWeight:600,display:"flex",alignItems:"center",gap:3}}>
-                  {s.status==="Live"&&<div style={{width:5,height:5,borderRadius:3,background:C.green,animation:"pulse 2s infinite"}}/>}
-                  {s.status}
-                </span>
-              </div>
-              <div style={{fontSize:13,fontWeight:600,color:C.g900,marginBottom:2}}>{s.n}</div>
-              <div style={{fontSize:10,color:C.g500,marginBottom:8}}>{s.t}</div>
-              <div style={{fontSize:11,color:C.g700,padding:"6px 8px",background:C.g50,borderRadius:5}}>{s.records}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div style={{padding:"24px 24px 0"}}>
-        <div style={{fontSize:11,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:10}}>Data tables</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
-          {[
-            {n:"GL Stream",d:"1,412 records",I:Ic.Database},
-            {n:"Sales Invoices",d:"628 records",I:Ic.Doc},
-            {n:"Purchase Register",d:"784 records",I:Ic.Doc},
-            {n:"E-Invoice Inbox",d:"1,371 records",I:Ic.Mail}
-          ].map((t,i)=>(
-            <button key={i} style={{padding:14,background:C.white,borderRadius:10,border:`1px solid ${C.g200}`,display:"flex",alignItems:"center",gap:10,textAlign:"left"}}>
-              <t.I s={18}/>
-              <div style={{flex:1}}>
-                <div style={{fontSize:12,fontWeight:600,color:C.g900}}>{t.n}</div>
-                <div style={{fontSize:10,color:C.g500}}>{t.d}</div>
-              </div>
-              <Ic.ChevR/>
-            </button>
-          ))}
-        </div>
-      </div>
-      <div style={{padding:24}}/>
-    </div>
-  );
-}
-
 // ============ AGENTS PAGE ============
 
 function AgentsPage(){
@@ -4129,7 +4067,6 @@ function App(){
     report:<ReportPage onSplitView={setSplitView}/>,
     govern:<GovernPage/>,
     artifacts:<ArtifactsPage businessId={businessId} period={period} runs={runs} archivedConversations={archivedConversations} highlightConvoId={highlightConvoId} clearHighlight={()=>setHighlightConvoId(null)}/>,
-    vault:<VaultPage/>,
     agents:<AgentsPage/>
   };
 
