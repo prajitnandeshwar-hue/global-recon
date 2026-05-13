@@ -2404,7 +2404,7 @@ function ReconReportView({type,initialState="populated",onClose,businessId,perio
             </div>
             {/* Summary table — 13 columns (12 data + View action) */}
             <div style={{overflowX:"auto"}}>
-            <div style={{background:C.white,borderRadius:10,border:`1px solid ${C.g200}`,overflow:"hidden",minWidth:1480}}>
+            <div style={{background:C.white,borderRadius:10,border:`1px solid ${C.g200}`,overflow:"hidden",width:"max-content",minWidth:"100%"}}>
               <div style={{display:"grid",gridTemplateColumns:"140px 200px 70px 200px 80px 80px 110px 110px 110px 100px 100px 100px 70px",padding:"10px 14px",fontSize:10,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.04em",borderBottom:`1px solid ${C.g200}`,background:C.g50,gap:6}}>
                 <div>Matching Status</div><div>Sub-Status</div><div>Severity</div><div>Recommended Action</div><div style={{textAlign:"right"}}>SR Doc Count</div><div style={{textAlign:"right"}}>E-Inv Count</div><div style={{textAlign:"right"}}>SR Taxable Value</div><div style={{textAlign:"right"}}>E-Inv Taxable Value</div><div style={{textAlign:"right"}}>Taxable Diff</div><div style={{textAlign:"right"}}>SR VAT Value</div><div style={{textAlign:"right"}}>E-Inv VAT Value</div><div style={{textAlign:"right"}}>VAT Diff</div><div style={{textAlign:"center"}}>Action</div>
               </div>
