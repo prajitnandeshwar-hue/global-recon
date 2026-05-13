@@ -831,7 +831,7 @@ function AIActionCenter({onAction}){
   );
 }
 
-function WorkflowCard({type,status="completed",vatRisk,vatRiskDelta,vatRiskNote,exceptionCount,exceptions,suppliers,onOpenRecon,lastRunTime}){
+function WorkflowCard({type,status="completed",vatRisk,vatRiskDelta,vatRiskNote,exceptionCount,exceptions,suppliers,onOpenRecon,lastRunTime,whatIDid}){
   const isPurchase=type==="Purchase";
   const accent=isPurchase?{bg:C.lilac,t:C.lilacT,bar:"#7C3AED"}:{bg:C.sky,t:C.skyT,bar:C.blueB};
   const notStarted=status==="not_started";
@@ -906,6 +906,20 @@ function WorkflowCard({type,status="completed",vatRisk,vatRiskDelta,vatRiskNote,
             ))}
           </div>
         </div>
+
+        {/* "What I did" — short narrative aside from the agent. Builds trust by
+            spelling out what was actually done, in plain language. */}
+        {whatIDid&&(
+          <div style={{padding:"14px 18px",borderBottom:`1px solid ${C.g100}`}}>
+            <div style={{background:C.g50,borderRadius:8,borderLeft:`2px solid ${C.blueXL}`,padding:"10px 12px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
+                <Ic.Sparkle s={12} c={C.aiSpark}/>
+                <span style={{fontSize:10,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.06em"}}>What I did</span>
+              </div>
+              <div style={{fontSize:12,lineHeight:1.6,color:C.g600,fontStyle:"italic"}}>{whatIDid}</div>
+            </div>
+          </div>
+        )}
 
         <div style={{marginTop:"auto",padding:"12px 18px",borderTop:`1px solid ${C.g100}`,background:C.g50}}>
           <button onClick={onOpenRecon} style={{width:"100%",padding:"9px 14px",borderRadius:8,background:`linear-gradient(135deg,${C.blueB},${C.navy})`,color:C.white,fontSize:12,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
@@ -2831,6 +2845,7 @@ function MitigatePage({setPage,setChatPrompt,setReconView}){
     vatRisk:"AED 130K",
     vatRiskDelta:"55 mismatches",
     exceptionCount:63,
+    whatIDid:"Pulled 59 sales invoices from SAP for Jan 2026. Cross-matched against 63 FTA portal records. Flagged 63 documents where ERP and portal don't agree, classified them by type, and ranked them by VAT exposure.",
     exceptions:[
       {label:"Party Mismatch",count:41,bg:C.peach,t:C.peachT},
       {label:"Value/Tax Mismatch",count:9,bg:C.cream,t:C.creamT},
@@ -2850,6 +2865,7 @@ function MitigatePage({setPage,setChatPrompt,setReconView}){
     vatRisk:"AED 137K",
     vatRiskNote:"NEW THIS PERIOD",
     exceptionCount:81,
+    whatIDid:"Pulled 892 purchase invoices from Oracle Fusion. Cross-matched against 845 FTA portal records and supplier-submitted e-invoices. Flagged 81 documents with discrepancies, prioritized by ITC exposure.",
     exceptions:[
       {label:"VAT Mismatch",count:37,bg:C.cream,t:C.creamT},
       {label:"Missing E-Invoice",count:20,bg:C.peach,t:C.peachT},
@@ -2870,53 +2886,8 @@ function MitigatePage({setPage,setChatPrompt,setReconView}){
           <button style={{padding:"6px 12px",borderRadius:6,fontSize:12,color:C.white,background:`linear-gradient(135deg,${C.blueB},${C.navy})`,display:"flex",alignItems:"center",gap:5,fontWeight:500}}><Ic.Download s={12} c={C.white}/>Export</button>
         </>}/>
 
-      {/* SECTION 1: Summary strip */}
-      <div style={{padding:"18px 24px 0"}}>
-        <div style={{background:`linear-gradient(135deg, #FFFBF5, #FFFEF9)`,border:`1px solid ${C.g200}`,borderRadius:10,display:"flex",alignItems:"center",padding:"20px 24px",gap:32}}>
-          {/* Compliance score */}
-          <div style={{display:"flex",alignItems:"center",gap:14,position:"relative"}}>
-            <div style={{width:60,height:60,borderRadius:30,background:C.g100,display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
-              <svg width="60" height="60" viewBox="0 0 60 60" style={{transform:"rotate(-90deg)"}}>
-                <circle cx="30" cy="30" r="25" fill="none" stroke={C.g200} strokeWidth="4"/>
-                <circle cx="30" cy="30" r="25" fill="none" stroke={C.green} strokeWidth="4"
-                  strokeDasharray={`${(KPI_DATA.complianceScore/100)*157} 157`} strokeLinecap="round"/>
-              </svg>
-              <div style={{position:"absolute",fontSize:16,fontWeight:700,color:C.g900}}>{KPI_DATA.complianceScore}%</div>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:2}}>
-              <span style={{fontSize:12,color:C.g500}}>Compliance score</span>
-              <button onClick={()=>setShowComplianceInfo(!showComplianceInfo)} style={{padding:0,cursor:"pointer",alignSelf:"flex-start"}}><Ic.Info s={12} c={C.g400}/></button>
-            </div>
-            {showComplianceInfo&&<InfoPopover content="Your compliance score reflects how cleanly your e-invoices reconcile with the FTA portal. A score under 80% means meaningful exceptions need attention. The agent recalculates this daily based on the most recent reconciliation." onClose={()=>setShowComplianceInfo(false)}/>}
-          </div>
-
-          <div style={{width:1,height:44,background:C.g200}}/>
-
-          {/* Total VAT at risk */}
-          <div style={{display:"flex",flexDirection:"column",gap:3}}>
-            <span style={{fontSize:11,color:C.g500,fontWeight:500}}>Total VAT at risk</span>
-            <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <span style={{fontSize:24,fontWeight:700,color:C.g900}}>AED 130K</span>
-              <div style={{display:"flex",alignItems:"center",gap:3,fontSize:11,color:C.red,fontWeight:600}}>
-                <Ic.ArrowU s={11} c={C.red}/>+12%
-              </div>
-            </div>
-          </div>
-
-          <div style={{width:1,height:44,background:C.g200}}/>
-
-          {/* Open exceptions */}
-          <div style={{display:"flex",flexDirection:"column",gap:3}}>
-            <span style={{fontSize:11,color:C.g500,fontWeight:500}}>Open exceptions</span>
-            <div style={{display:"flex",alignItems:"center",gap:8}}>
-              <span style={{fontSize:24,fontWeight:700,color:C.g900}}>63</span>
-              <span style={{fontSize:11,color:C.g500}}>+14 vs Dec</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 2: HERO - Reconciliation tab group */}
+      {/* SECTION 1: HERO - Reconciliation tab group (no orientation strip above —
+          the AI Briefing panel below carries the orientation numbers in prose) */}
       <div style={{padding:"24px 24px 0"}}>
         <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:12,borderBottom:`1px solid ${C.g200}`,paddingBottom:0}}>
           <div style={{display:"flex",gap:2}}>
@@ -2934,11 +2905,82 @@ function MitigatePage({setPage,setChatPrompt,setReconView}){
         </div>
       </div>
 
-      {/* SECTION 3: Trend + suppliers (supporting context) */}
+      {/* SECTION 2: AI Briefing — replaces the previous trend chart + suppliers grid.
+          Calm narrative surface; orientation numbers are woven into the prose. */}
       <div style={{padding:"24px 24px 0"}}>
-        <div style={{display:"grid",gridTemplateColumns:"1.6fr 1fr",gap:12}}>
-          <ExceptionTrendChart/>
-          <TopRiskSuppliers onSupplierAction={(s)=>setChatPrompt(`Draft a correction request to ${s.n} for the ${s.e} exceptions worth ${s.a}`)}/>
+        <div style={{background:C.blueBg,border:`1px solid ${C.blueXL}`,borderRadius:12,padding:24}}>
+          {/* Header */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:18,paddingBottom:14,borderBottom:`1px solid ${C.blueXL}`}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(135deg,${C.aiD},${C.aiM})`,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <Ic.Sparkle s={14}/>
+              </div>
+              <div>
+                <div style={{fontSize:14,fontWeight:600,color:C.g900,letterSpacing:"-0.005em"}}>Today's briefing</div>
+                <div style={{fontSize:10,color:C.g500,marginTop:1}}>From the VAT Recon Agent · for Tech Corp UAE Holdings</div>
+              </div>
+            </div>
+            <div style={{fontSize:10,color:C.g500,display:"flex",alignItems:"center",gap:5}}>
+              <Ic.Clock s={10} c={C.g500}/><span>Generated by VAT Recon Agent at 08:45 AM</span>
+            </div>
+          </div>
+
+          {/* Paragraph 1 — Headline finding */}
+          <div style={{marginBottom:18}}>
+            <p style={{fontSize:14,lineHeight:1.7,color:C.g800,margin:0,marginBottom:10}}>
+              Your compliance score is <strong style={{color:C.g900,fontWeight:600}}>63%</strong> and <strong style={{color:C.g900,fontWeight:600}}>AED 130K</strong> is at risk across <strong style={{color:C.g900,fontWeight:600}}>63 open exceptions</strong>. Most of that exposure comes from a single supplier: <strong style={{color:C.g900,fontWeight:600}}>Emirates Suppliers</strong>, with AED 22K in VAT rounding errors across 5 invoices. The pattern matches the past two months — they keep declaring VAT at 4.76% instead of 5%. I've drafted a correction request waiting for your approval.
+            </p>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              <button onClick={()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Show me the Emirates Suppliers correction draft");}}
+                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
+                <Ic.Mail s={11} c={C.blueM}/>Review correction draft
+              </button>
+              <button onClick={()=>setReconView({type:"Sales",state:"populated"})}
+                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
+                <Ic.ArrowF s={11} c={C.blueM}/>Open Sales Recon
+              </button>
+            </div>
+          </div>
+
+          {/* Paragraph 2 — Escalation flag */}
+          <div style={{marginBottom:18}}>
+            <p style={{fontSize:14,lineHeight:1.7,color:C.g800,margin:0,marginBottom:10}}>
+              <strong style={{color:C.g900,fontWeight:600}}>Dubai Imports LLC</strong> has been flagged for the third consecutive month with missing e-invoices. This is starting to look systemic — worth escalating to your tax manager.
+            </p>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              <button onClick={()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Escalate Dubai Imports LLC to the tax manager — 3 months of missing e-invoices");}}
+                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
+                <Ic.Flag s={11} c={C.blueM}/>Escalate to tax manager
+              </button>
+              <button onClick={()=>setPage("artifacts")}
+                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
+                <Ic.Folder s={11} c={C.blueM}/>Show pattern across periods
+              </button>
+            </div>
+          </div>
+
+          {/* Paragraph 3 — Trend context */}
+          <div>
+            <p style={{fontSize:14,lineHeight:1.7,color:C.g800,margin:0,marginBottom:10}}>
+              Compared to December, exception volume is up <strong style={{color:C.g900,fontWeight:600}}>32%</strong>, mostly driven by Emirates Suppliers and Dubai Imports. Resolving these two would cut about <strong style={{color:C.g900,fontWeight:600}}>60%</strong> of this period's risk.
+            </p>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              <button onClick={()=>{setReconView({type:"Sales",state:"populated"});setChatPrompt&&setChatPrompt("Walk me through resolving Emirates Suppliers and Dubai Imports in priority order");}}
+                style={{padding:"7px 12px",height:32,borderRadius:7,border:`1px solid ${C.blueXL}`,background:C.white,color:C.blueM,fontSize:12,fontWeight:600,display:"inline-flex",alignItems:"center",gap:5}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.white;}}>
+                <Ic.Sparkle s={11} c={C.blueM}/>Show me how
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div style={{padding:24}}/>
