@@ -2402,20 +2402,31 @@ function ReconReportView({type,initialState="populated",onClose,businessId,perio
                 </div>
               ))}
             </div>
-            {/* Summary table — ALL 12 columns */}
+            {/* Summary table — 13 columns (12 data + View action) */}
             <div style={{overflowX:"auto"}}>
-            <div style={{background:C.white,borderRadius:10,border:`1px solid ${C.g200}`,overflow:"hidden",minWidth:1400}}>
-              <div style={{display:"grid",gridTemplateColumns:"140px 200px 70px 200px 80px 80px 110px 110px 110px 100px 100px 100px",padding:"10px 14px",fontSize:10,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.04em",borderBottom:`1px solid ${C.g200}`,background:C.g50,gap:6}}>
-                <div>Matching Status</div><div>Sub-Status</div><div>Severity</div><div>Recommended Action</div><div style={{textAlign:"right"}}>SR Doc Count</div><div style={{textAlign:"right"}}>E-Inv Count</div><div style={{textAlign:"right"}}>SR Taxable Value</div><div style={{textAlign:"right"}}>E-Inv Taxable Value</div><div style={{textAlign:"right"}}>Taxable Diff</div><div style={{textAlign:"right"}}>SR VAT Value</div><div style={{textAlign:"right"}}>E-Inv VAT Value</div><div style={{textAlign:"right"}}>VAT Diff</div>
+            <div style={{background:C.white,borderRadius:10,border:`1px solid ${C.g200}`,overflow:"hidden",minWidth:1480}}>
+              <div style={{display:"grid",gridTemplateColumns:"140px 200px 70px 200px 80px 80px 110px 110px 110px 100px 100px 100px 70px",padding:"10px 14px",fontSize:10,fontWeight:600,color:C.g500,textTransform:"uppercase",letterSpacing:"0.04em",borderBottom:`1px solid ${C.g200}`,background:C.g50,gap:6}}>
+                <div>Matching Status</div><div>Sub-Status</div><div>Severity</div><div>Recommended Action</div><div style={{textAlign:"right"}}>SR Doc Count</div><div style={{textAlign:"right"}}>E-Inv Count</div><div style={{textAlign:"right"}}>SR Taxable Value</div><div style={{textAlign:"right"}}>E-Inv Taxable Value</div><div style={{textAlign:"right"}}>Taxable Diff</div><div style={{textAlign:"right"}}>SR VAT Value</div><div style={{textAlign:"right"}}>E-Inv VAT Value</div><div style={{textAlign:"right"}}>VAT Diff</div><div style={{textAlign:"center"}}>Action</div>
               </div>
               {RECON_SUMMARY_DATA.map((r,i)=>{
                 const sevC=r.sev==="Critical"?C.red:r.sev==="High"?C.amber:r.sev==="Medium"?"#D97706":C.g400;
                 const sevBg=r.sev==="Critical"?C.redL:r.sev==="High"?C.amberL:r.sev==="Medium"?C.amberL:C.g100;
+                // Subtle severity tint on the row — barely-there in resting state, slightly
+                // deeper on hover. Info rows stay neutral. Keeps the table calm but readable.
+                const rowTint=r.sev==="Critical"?"rgba(220,38,38,0.045)":r.sev==="High"?"rgba(217,119,6,0.045)":r.sev==="Medium"?"rgba(217,119,6,0.022)":"transparent";
+                const rowTintHover=r.sev==="Critical"?"rgba(220,38,38,0.09)":r.sev==="High"?"rgba(217,119,6,0.09)":r.sev==="Medium"?"rgba(217,119,6,0.05)":C.g50;
                 const dc=(v)=>v<0?C.red:v>0?C.green:C.g400;
                 const fmt=(v)=>v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+                // Click → switch to Document Detail tab with the doc filter narrowed to this
+                // row's matching status + sub-status. Clears any other filters first so the
+                // user sees exactly the documents that fed this category.
+                const viewDocuments=()=>{
+                  setActiveTab("document");
+                  setDocF({ms:r.ms,sev:[],ss:[r.ss],parties:[],amtMin:null,amtMax:null,dateMin:"",dateMax:"",eInvSt:[],search:""});
+                };
                 return (
-                  <div key={i} style={{display:"grid",gridTemplateColumns:"140px 200px 70px 200px 80px 80px 110px 110px 110px 100px 100px 100px",padding:"10px 14px",fontSize:11,color:C.g700,borderBottom:i<RECON_SUMMARY_DATA.length-1?`1px solid ${C.g100}`:"none",alignItems:"center",gap:6}}
-                    onMouseEnter={e=>e.currentTarget.style.background=C.g50} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                  <div key={i} style={{display:"grid",gridTemplateColumns:"140px 200px 70px 200px 80px 80px 110px 110px 110px 100px 100px 100px 70px",padding:"10px 14px",fontSize:11,color:C.g700,borderBottom:i<RECON_SUMMARY_DATA.length-1?`1px solid ${C.g100}`:"none",alignItems:"center",gap:6,background:rowTint,transition:"background 0.15s"}}
+                    onMouseEnter={e=>e.currentTarget.style.background=rowTintHover} onMouseLeave={e=>e.currentTarget.style.background=rowTint}>
                     <div style={{fontWeight:500,color:C.g900,display:"flex",alignItems:"center",gap:6}}><div style={{width:8,height:8,borderRadius:4,background:sevC,flexShrink:0}}/>{r.ms}</div>
                     <div style={{fontSize:10,color:C.g600}}>{r.ss}</div>
                     <div><span style={{fontSize:9,padding:"2px 6px",borderRadius:8,background:sevBg,color:sevC,fontWeight:600}}>{r.sev}</span></div>
@@ -2428,12 +2439,20 @@ function ReconReportView({type,initialState="populated",onClose,businessId,perio
                     <div style={{textAlign:"right",fontSize:10}}>{fmt(r.srVAT)}</div>
                     <div style={{textAlign:"right",fontSize:10}}>{fmt(r.eVAT)}</div>
                     <div style={{textAlign:"right",fontWeight:600,color:dc(r.vDiff),fontSize:10}}>{fmt(r.vDiff)}</div>
+                    <div style={{textAlign:"center"}}>
+                      <button onClick={viewDocuments} title={`View documents · ${r.ss}`}
+                        style={{padding:"4px 9px",borderRadius:6,border:`1px solid ${C.g200}`,background:C.white,color:C.blueM,fontSize:10,fontWeight:600,display:"inline-flex",alignItems:"center",gap:3}}
+                        onMouseEnter={e=>{e.currentTarget.style.background=C.blueXXL;e.currentTarget.style.borderColor=C.blueXL;}}
+                        onMouseLeave={e=>{e.currentTarget.style.background=C.white;e.currentTarget.style.borderColor=C.g200;}}>
+                        View<Ic.ArrowF s={9} c={C.blueM}/>
+                      </button>
+                    </div>
                   </div>
                 );
               })}
             </div>
             </div>
-            <div style={{fontSize:10,color:C.g400,lineHeight:1.5,marginTop:10}}>These categories are how the agent classified each transaction during reconciliation. Click any row to see the underlying documents.</div>
+            <div style={{fontSize:10,color:C.g400,lineHeight:1.5,marginTop:10}}>These categories are how the agent classified each transaction during reconciliation. Click <strong style={{color:C.g600,fontWeight:600}}>View</strong> on any row to drill into its underlying documents.</div>
           </div>
           )}
 
